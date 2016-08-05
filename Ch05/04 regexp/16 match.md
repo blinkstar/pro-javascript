@@ -1,0 +1,36 @@
+#### match
+
+`match()` 方法是最常用的 `String` 正则表达式方法。  
+
+它的唯一参数就是一个正则表达式(或通过 `RegExp()` 构造函数将其转换为正则表达式)，  
+返回的是一个由匹配结果组成的数组。  
+
+如果该正则表达式设置了修饰符 `g` ，则该方法返回的数组包含字符串中的所有匹配结果。例如：  
+
+	"1 plus 2 equals 3".match(/\d+/g);     // 返回 ["1", "2", "3"]
+
+如果这个正则表达式没有设置修饰符 `g`，`match()` 就不会进行全局检索，它只检索第一个匹配。  
+
+但即使 `match()` 执行的不是全局检索，**它也返回一个数组**。  
+在这种情况下，数组的第一个元素就是匹配的字符串，  
+余下的元素则是正则表达式中用圆括号括起来的子表达式。  
+
+因此，如果 `match()` 返回一个数组`a`，那么 `a[0]` 存放的是完整的匹配，  
+`a[1]` 存放的则与是第一个用圆括号括起来的表达式相匹配的子串，以此类推。  
+
+为了和方法 `replace()` 保持一致，`a[n]` 存放的是 `$n` 的内容。
+
+例如，使用如下的代码来解析一个 URL :  
+
+	var url = /(\w+):\/\/([\w.]+)\/(\S*)/ ;
+    var text = "Visit my blog at http://www.example.com/~david";
+    var result = text.match(url);
+    if(result != null){
+    	var fullurl = result[0];   // 包含 "http://www.example.com/~david"
+        var protocol = result[1];  // 包含 "http"
+        var host = result[2];      // 包含 "www.example.com"
+        var path = result[3];      // 包含 "~david" 
+    }
+      
+值得注意的是，给字符串的 `match()` 方法传入一个**非全局**的正则表达式，  
+实际上和给这个正则表达式的 `exec()` 方法传入的字符串是一模一样的，它返回的数组带有两个属性： index 和 input 。

@@ -1,0 +1,99 @@
+### Number 类型
+
+Number 是与数字值对应的引用类型。  
+
+要创建  Number 对象，可以在调用 Number 构造函数时向其中传递相应的数值。下面是一个例子。  
+
+	var numberObject = new Number(10);
+
+与Boolean 类型一样，Number 类型也重写了 valueOf()、toLocaleString() 和 toString() 方法。  
+
+重写后的 valueOf() 方法返回对象表示的基本类型的数值，另外两个方法则返回字符串形式的数值。
+
+我们在前面还介绍过，可以为 toString() 方法传递一个表示基数的参数，  
+告诉它返回几进制数值的字符串形式，如下面的例子所示。  
+
+	var num = 10;
+    alert(num.toString());   // "10"
+    alert(num.toString(2));  // "1010"
+    alert(num.toString(8));  // "12"
+    alert(num.toString(10)); // "10"
+    alert(num.toString(16)); // "a"
+
+除了继承的方法之外，Number 类型还提供了一些用于将数值格式化为字符串的方法。  
+
+其中，`toFixed()` 方法会按照指定的小数位返回数值的字符串表示，例如：  
+
+	var num = 10;
+    alert(num.toFixed(2));   // "10.00"
+
+这里给 `toFixed()` 方法传入了数值 2 ，意思是显示几位小数。  
+于是，这个方法返回了 "10.00" ，即以 0 填补了必要的小数位。  
+如果数值本身包含的小数位比指定的还多，那么接近指定的最大小数位的值就会**舍入**，如下面的例子所示。  
+     
+	var num = 10.005;
+    alert(num.toFixed(2));   // "10.01"
+
+能够自动舍入的特性，使得 `toFixed()` 方法很适合处理货币值。  
+
+但需要注意的是，不同浏览器给这个方法设定的舍入规则可能会有所不同。  
+
+在给 toFixed() 传入 0 的情况下，  
+IE8 及之前版本不能正确舍入范围在 {(-0.94,-0.5],[0.5,0.94}} 之间的值。  
+对于这个范围内的值，IE会返回0，而不是 -1 或 1；其他浏览器都能返回正确的值。  
+IE 9 修复了这个问题。
+     
+toFixed() 方法可以表示带有 0 到 20 个小数位的数值。  
+但这只是标准实现的范围，有些浏览器也可能支持更多位数。
+
+另外可用于格式化数值的方法是 `toExponential()`，  
+该方法返回以**指数表示法** (也称e表示法)表示的数值的字符串形式。  
+
+与 toFixed()一样，toExponential() 也接收一个参数，  
+而且该参数同样也是指定输出结果中的**小数位数**。看下面的例子。
+
+	var num = 10;
+    alert(num.toExponential(1));   // "1.0e+1"
+
+以上代码输出了 "1.0e+1" ;不过，这么小的数值一般不必使用 e 表示法。
+
+如果你想得到表示某个数值的最合适的格式，就应该使用 toPrecision() 方法。  
+对于一个数值来说，toPrecision() 方法可能会返回固定大小 (fixed) 格式，  
+也可能返回指数 (exponential) 格式；具体规则是看哪种格式最合适。  
+这个方法接收一个参数，即表示数值的所有数字的位数 (不包括指数部分)。 请看下面的例子。  
+
+	var num = 99;
+    alert(num.toPrecision(1));    // "1e+2"
+    alert(num.toPrecision(2));    // "99"
+    alert(num.toPrecision(3));    // "99.0"
+
+以上代码首先完成的任务是以一位数来表示 99 ，结果是 "1e+2" ，即 100。   
+因为一位数无法准确地表示 99 ，因此 toPrecision() 就将它向上舍入为 100，  
+这样就可以使用一位数来表示它了。  
+
+而接下来的用两位数表示 99 ，当然还是 "99" 。  
+
+最后，在想以三位数表示 99 时，toPrecision() 方法返回了 "99.0" 。  
+
+实际上，toPrecision() 会根据要处理的数值决定到底是调用 toFixed() 还是调用 toExponential() 。  
+而且这三个方法**都可以通过向上或向下舍入**，做到以最准确的形式来表示带有正确小数位的值。
+
+toPrecision() 方法可以表现 1 到 21 位小数。某些浏览器支持的范围更大，但这是典型实现的范围。
+
+与 Boolean 对象类似，Number 对象也以后台方式为数值提供了重要的功能。  
+但与此同时，我们仍然不建议直接实例化 Number 类型，而原因与显示创建 Boolean 对象是一样。  
+具体来讲，就是在使用 typeof 和 instanceof 操作符测试基本类型数值与引用类型数值时，  
+得到的结果完全不同，如下面的例子所示。
+
+	var numberObject = new Number(10);
+    var numberValue = 10;
+    alert(typeof numberObject);   // "object"
+    alert(typeof numberValue);    // "number"
+    alert(numberObject instanceof Number);  // true
+    alert(numberValue instanceof Number);   // false
+
+在使用 typeof 操作符测试基本类型数值时，始终会返回 "number" ，  
+而在测试 Number 对象时，则会返回 "object" 。  
+
+类似地，Number 对象是 Number 类型的实例，而基本类型的数值则不是。
+

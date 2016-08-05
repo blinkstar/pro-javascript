@@ -1,0 +1,32 @@
+#### slice
+
+下一个方法是 slice()，它能够基于当前数组中的**一或多个项**创建一个新数组。  
+
+slice() 方法可以接受一或两个参数，即要返回项的**起始**和**结束**位置。  
+
+在只有一个参数的情况下，slice()方法返回从该参数指定位置开始到当前数组末尾的所有项。  
+
+如果有两个参数，该方法返回起始和结束位置之间的项 -- 但不包括**结束位置**的项。  
+
+注意，**slice()方法不会影响原始数组**。  
+请看下面的例子。
+
+	var colors = ["red", "green", "blue", "yellow", "purple"];
+    var colors2 = colors.slice(1);
+    var colors3 = colors.slice(1, 4);
+
+    alert(colors2);  // green,blue,yellow,purple
+    alert(colors3); // green,blue,yellow
+
+在这个例子中，开始定义的数组 colors 包含5项。  
+调用 slice()并传入1会得到一个包含4项的新数组；  
+因为是从位置1开始复制，所以会包含"green"而不会包含 "red"。  
+这个新数组 colors2 中包含的是 "green"、"blue"、"yellow" 和 "purple"。  
+接着，我们再次调用 slice()并传入了1和4，表示复制从位置1开始，到位置3结束。  
+结果数组colors3中包含了 "green"、"blue" 和 "yellow"。
+
+**如果 slice() 方法的参数中有一个负数，则用数组长度加上该数来确定相应的位置。**  
+例如，在一个包含5项的数组上调用slice(-2, -1)与调用slice(3,4)得到的结果相同。  
+
+**如果结束位置小于起始位置，则返回空数组。**  
+

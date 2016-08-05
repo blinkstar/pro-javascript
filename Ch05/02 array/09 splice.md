@@ -1,0 +1,46 @@
+#### splice
+     
+下面我们来介绍 splice() 方法，这个方法恐怕要算是最强大的数组方法了，它有很多种用法。  
+
+splice()的主要用途是向数组的中部插入项，但使用这种方法的方式则有如下3种。
+
+ - 删除：可以删除任意数量的项，只需指定2个参数：要删除的**第一项的位置**和要删除的**项数**。  
+ 	例如，splice(0,2)会删除数组中的前两项。
+ - 插入：可以向指定位置插入任意数量的项，只需提供3个参数：起始的位置、0(要删除的项数)和要插入的项。  
+ 	如果要插入**多个项**，可以再传入**第四、第五，以至任意多个项**。  
+ 	例如，splice(2,0,"red","green")会从当前数组的位置2开始插入字符串"red"和"green"。
+ - 替换：可以向指定位置插入任意数量的项，且同时删除任意数量的项，  
+ 	只需指定3个参数：起始位置，要删除的项数和要插入的任意数量的项。  
+ 	插入的项数不必与删除的项数相等。  
+ 	例如，splice(2,1,"red","green")会删除当前数组位置2的项，  
+ 	然后再从位置2开始插入字符串"red"和"green"。
+
+注意，**splice()方法影响原始数组**。 
+
+splice()方法始终都会返回一个数组，该数组中包含**从原始数组中删除的项** 
+(如果没有删除任何项，则返回一个空数组)。  
+下面的代码展示了上述3种使用splice()方法的方式。
+
+	var colors = ["red", "green", "blue"];  
+    var removed = colors.splice(0, 1);    // 删除第一项
+    alert(colors);  // green, blue
+    alert(removed);  // red, 返回的数组中只包含一项
+
+    removed = colors.splice(1, 0, "yellow", "orange");   // 从位置1开始插入两项
+    alert(colors);  // green,yellow,orange,blue
+    alert(removed); // 返回的是一个空数组
+     
+    removed = colors.splice(1, 1, "red", "purple"); // 插入两项，删除一项
+    alert(colors);    // green,red,purple,orange,blue
+    alert(removed);  // yellow,返回的数组中只包含一项
+
+上面的例子首先定义了一个包含3项的数组 colors 。  
+第一次调用splice() 方法只是删除了这个数组的第一项，  
+之后colors还包含"green"和"blue"两项。  
+第二次调用splice()方法时在位置1插入了两项，  
+结果colors中包含"green"、"yellow"、"orange"和"blue"。  
+这一次操作没有删除项，因此返回了一个空数组。  
+最后一次调用splice()方法删除了位置1处的一项，  
+然后又插入了"red"和"purple"。  
+在完成以上操作之后，数组colors中包含的是"green"、"red"、"purple"、"orange"和"blue"。
+

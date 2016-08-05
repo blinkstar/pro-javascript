@@ -1,0 +1,205 @@
+## Date 类型
+
+ECMAScript 中的 Date类型是在早期 Java 中的 java.util.Date 类型基础上构建的。  
+为此，Date类型使用自 UTC (Coordinated Universal Time，国际协调时间)  
+1970年1月1日午夜(零时)开始经过的毫秒数来保存日期。  
+在使用这种数据存储格式的条件下，Date类型保存的日期能够精确到1970年1月1日之前或之后的 285 616年。
+
+要创建一个日期对象，使用 new 操作符和 Date 构造函数即可，如下所示。
+
+	var now = new Date();
+
+在调用 Date 构造函数而不传递参数的情况下，新创建的对象自动获得当前日期和时间。
+
+**如果想根据特定的日期和时间创建日期对象，必须传入表示该日期的毫秒数**   
+(即从UTC时间 1970年1月1日午夜起至该日期止经过的毫秒数)。    
+    
+为了简化这一计算过程，ECMAScript 提供了两个方法：Date.parse() 和 Date.UTC() .
+     
+其中，**Date.parse() 方法接收一个表示日期的字符串参数**，  
+然后尝试根据这个字符串返回相应的日期的毫秒数。  
+
+ECMA-262没有定义 Date.parse()应该支持哪种日期格式，  
+**因此这个方法的行为因实现而异，而且通常是因地区而异。**  
+将地区设置为美国的浏览器通常接受下列日期格式：
+
+ - "月/日/年"，如 6/13/2004
+ - "英文月名 日，年"，如 January 12,2004
+ - "英文星期几 英文月名 日 年 时:分:秒 时区"，如 Tue May 25 2004 00:00:00 GMT-0700  。
+ - ISO 8601 扩展格式 YYYY-MM-DDTHH:mm:ss.sssZ (例如 2004-05-25T00:00:00)。  
+ 	只有兼容ECMAScript 5 的实现支持这种格式。
+
+例如，要为2004年5月25日创建一个日期对象，可以使用下面的代码：
+
+	var someDate = new Date(Date.parse("May 25,2004")); 
+
+如果传入 Date.parse() 方法的字符串不能表示日期，那么它会返回NaN 。
+     
+实际上，如果直接将表示日期的字符串传递给 Date 构造函数，也会在后台调用 Date.parse()。  
+换句话说，下面的代码与前面的例子是等价的：
+
+	var someDate = new Date("May 25, 2004");
+
+这行代码将会得到与前面相同的日期对象。
+
+**Date.parse() 返回的是本地时间。**
+
+日期对象及其在不同浏览器中的实现有许多奇怪的行为。  
+其中有一种倾向是将超出范围的值替换成当前的值，以便生出输出。  
+例如，在解析 "January 32,2007" 时，有的浏览器会将其解释为 "February 1, 2007"。  
+而Opera 则倾向于插入当前月份的当前日期，返回 "January 当前日期,2007"。  
+也就是说，如果在 2007年9月21运行前面的代码，将会得到 "January 21,2007" (都是21日)。
+
+**Date.UTC() 方法同样也返回表示日期的毫秒数，但它与Date.parse()在构建值时使用不同的信息。**  
+
+Date.UTC()的参数分别是年份、基于0的月份(一月是0，二月是1，以此类推)、  
+月中的哪一天(1到31)、小时数(0到23)、分钟、秒以及毫秒数。
+
+在这些参数中，**只有前两个参数(年和月)是必需的**。  
+如果没有提供月中的天数，则假设天数为 1；  
+如果省略其他参数，则统统假设为 0.以下是两个使用 Date.UTC 方法的例子：
+
+	// GMT 时间 2000年1月1日午夜零时
+    var y2k = new Date(Date.UTC(2000, 0));  // Date {Sat Jan 01 2000 08:00:00 GMT+0800}
+    // GMT 时间2005年5月5日下午5:55:55
+    var allFives = new Date(Date.UTC(2005, 4, 5, 17, 55, 55)); // Date {Fri May 06 2005 01:55:55 GMT+0800}
+    
+这个例子创建了两个日期对象。   
+第一个对象表示GMT时间 2000年1月1日午夜零时，  
+传入的值一个是表示年份的2000，一个是表示月份的0 (即一月份)。  
+因为其他参数是自动填充的 (即月中的天数为1，其他所有的参数均为0)，   
+所以结果就是该月第一天的午夜零时。
+
+第二个对象表示GMT时间2005年5月5日下午5:55:55，  
+即使日期和时间中只包含5，也需要传入不一样的参数：  
+月份必须是 4 (因为月份是基于0的)、  
+小时必须设置为17(因为小时以0到23表示)，剩下的参数就很直观了。
+    
+如同模仿 Date.parse() 一样，Date 构造函数也会模仿 Date.UTC()，  
+但有一点明显不同：
+**日期和时间都基于本地时区而非GMT来创建**。  
+ 
+ - new Date()   本地时间
+ - new Date(Date.UTC()) GMT时间
+
+不过，Date构造函数接收的参数仍然与 Date.UTC() 相同。
+     
+因此，如果第一个参数是数值，Date 构造函数就会假设该值是日期中的年份，  
+而第二个参数是月份，以此类推。据此，可以将前面的例子重写如下。
+
+	// 本地时间 2000年1月1日午夜零时
+    var y2k = new Date(2000, 0); // Date {Sat Jan 01 2000 00:00:00 GMT+0800}
+    // 本地时间2005年5月5日下午5:55:55
+    var allFives = new Date(2005, 4, 5, 17, 55, 55);   // Date {Thu May 05 2005 17:55:55 GMT+0800}
+
+以上代码创建了与前面例子中相同的两个日期对象，只不过这次的日期都是基于系统设置的本地时区创建的。
+
+ECMAScript 5 添加了 Date.now() 方法，返回表示调用这个方法时的日期和时间的毫秒数。  
+这个方法简化了使用 Date 对象分析代码的工作。例如：
+	
+	// 取得开始时间
+    var start = Date.now();  //  1461949672678
+    // 调用函数
+    doSomething();
+    // 取得停止时间
+    var stop = Date.now(),
+    	result = stop - start;
+
+支持 Date.now() 方法的浏览器包括 IE9+、Firefox 3+、Safari 3 +、Opera 10.5 和 Chrome 。  
+在不支持它的浏览器中，使用 + 操作符把 Date 对象转换成数字，也可以达到同样的目的。 
+
+	// 取得开始时间
+    var start = + new Date();
+    // 调用函数
+    doSomething();
+    // 取得停止时间
+    var stop = + new Date(),
+    	result = stop - start; 
+    	
+### 继承的方法
+
+与其他引用类型一样，Date 类型也重写了 toLocaleString()、toString() 和 valueOf() 方法；  
+但这些方法返回的值与其他类型中的方法不同。
+     
+Date 类型的 toLocaleString() 方法会按照与浏览器设置的地区相适应的格式返回日期和时间。  
+这大致意味着时间格式中会包含 `AM` 或 `PM`，但不会包含时区信息(当然，具体的格式会因浏览器而异)。  
+
+而 toString() 方法则通常返回带有时区信息的日期和时间，  
+其中时间一般以军用时间 (即小时的范围是0到23)表示。  
+
+下面给出了在不同浏览器中调用 toLocaleString() 和 toString() 方法，  
+输出 PST (Pacific Standard Time，太平洋标准时间)   
+时间 2007年2月1日午夜零时的结果。
+
+	var date = new Date(2007, 1, 1);
+    console.log(date.toString());  
+    console.log(date.toLocaleString());  
+
+Internet Explorer 8
+ - toLocaleString() -- Thursday, February 01, 2007 12:00:00 AM
+ - toString()  -- Thu Feb 1 00:00:00 PST 2007
+
+Firefox 3.5
+ - toLocaleString() -- Thursday, February 01, 2007 12:00:00 AM
+ - toString() -- Thu Feb 01 2007 00:00:00 GMT-0800 (Pacific Standard Time)
+
+Safari 4
+ - toLocaleString() -- Thursday, February 01, 2007 00:00:00
+ - toString() -- Thu Feb 01 2007 00:00:00 GMT-0800 (Pacific Standard Time)
+
+Chrome 4
+ - toLocaleString() -- Thu, Feb 01, 2007 00:00:00 GMT-0800 (Pacific Standard Time)
+ - toString() -- Thu Feb 01 2007 00:00:00 GMT-0800 (Pacific Standard Time)
+
+Opera 10
+ - toLocaleString() -- 2/1/2007 12:00:00 AM
+ - toString() -- Thu, 01 Feb 2007 00:00:00 GMT-0800 
+
+显然，这两个方法在不同的浏览器中返回的日期和时间格式可谓大相径庭。  
+事实上，toLocaleString() 和 toString() 的这一差别仅在调试代码时比较有用，  
+而在显示日期和时间时没有什么价值。
+    
+至于 Date 类型的 `valueOf()` 方法，**则根本不返回字符串，而是返回日期的毫秒数表示**。  
+
+因此，可以方便使用比较操作符(小于或大于)来比较日期值。请看下面的例子。
+
+	var date1 = new Date(2007, 0, 1);  // "January 1, 2007"
+    var date2 = new Date(2007, 1, 1);  // "February 1, 2007"
+
+    alert(date1 < date2);  // true
+    alert(date1 > date2);  // false
+     
+    console.log(date1 < date2.valueOf()); // true
+    console.log(date1.valueOf() < date2);  // true
+
+从逻辑上讲，2007年1月1日要早于 2007年2月1日，此时如果我们说前者小于后者比较符合常理。  
+而表示2007年1月1日的毫秒数小于表示2007年2月1日的毫秒数，  
+因此在首先使用小于操作符比较日期时，返回的结果是 true 。  
+这样，就为我们比较日期提供了极大方便。
+
+
+### 日期格式化方法
+
+Date 类型还有一些专门用于将日期格式化为字符串的方法，这些方法如下。
+
+ - toDateString() -- 以特定于实现的格式显示星期几、月、日和年；
+ - toTimeString() -- 以特定于实现的格式显示时、分、秒和时区；
+ - toLocaleDateString() -- 以特定于地区的格式显示星期几、月、日和年；
+ - toLocaleTimeString() -- 以特定于地区的格式显示时、分、秒；
+ - toUTCString() -- 以特定于实现的格式完整的 UTC 日期。
+
+与 toLocaleString() 和 toString() 方法一样，  
+以上这些字符串格式方法的输出也是因浏览器而异的，  
+因此没有哪一个方法能够用来在用户界面中显示一致的日期信息。
+     
+除了前面介绍的方法之外，还有一个名叫 toGMTString() 的方法，  
+这是一个与 toUTCString() 等价的方法，  
+其存在的目的在于确保向后兼容。  
+
+不过，EMCAScript 推荐现在编写的代码一律使用 `toUTCString()` 方法。
+
+### 日期/时间组件方法
+   
+需要注意的是，**UTC日期指的是在没有时区偏差的情况下 (将日期转换为 GMT 时间) 的日期值**。
+
+ 

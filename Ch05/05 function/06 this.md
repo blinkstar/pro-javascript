@@ -1,0 +1,68 @@
+#### this
+
+函数内部的另一个特殊对象是 `this` ，其行为与 Java 和 C# 中的 this 大致类似。  
+
+换句话说，this 引用的是**函数据以执行的环境对象** -- 或者也可以说是 this 值   
+(当在网页的全局作用域中调用函数时，this 对象引用的就是 window)。来看下面的例子。  
+
+	window.color = "red";
+    var o = {color: "blue"};
+
+    function sayColor(){
+    	alert(this.color);
+    }
+    sayColor();   // "red"
+     
+    o.sayColor = sayColor;
+    o.sayColor(); // "blue"
+
+上面这个函数 sayColor() 是在全局作用域中定义的，它引用了 this 对象。  
+
+由于**在调用函数之前，this 的值并不确定**，因此 **this 可能会在代码执行过程中引用不同的对象**。  
+
+当在全局作用域中调用 sayColor() 时，this 引用的是全局对象 window；  
+换句话说，对 this.color 求值会转换成对 window.color 求值，  
+于是结果就返回了 "red" 。  
+
+而**当把这个函数赋值给对象 o 并调用 o.sayColor() 时，this 引用的是对象 o**，    
+因此对 this.color 求值会转换成对 o.color 求值，结果就返回了 "blue"。  
+
+请一定要牢记，函数的名字仅仅是一个包含指针的变量而已。  
+因此，**即使是在不同的环境中执行，全局的 sayColor() 函数与 o.sayColor() 指向的仍然是同一个函数**。  
+
+`ECMAScript 5` 也规范了另一个函数对象的属性： caller 。  
+除了 Opera 的早期版本不支持，其他浏览器都支持这个 `ECMAScript 3` 并没有定义的属性。
+
+这个属性中保存着 **调用当前函数的函数的引用，如果是在全局作用域中调用当前函数，它的值为 null** 。例如：  
+
+	function outer(){
+    	inner(); 
+    }
+    function inner(){
+    	alert(inner.caller);
+    }
+    outer();
+
+以上代码会导致警告框中显示 outer() 函数的源代码。  
+因为 outer() 调用了 inner() ，所以 inner.caller 就指向 outer() 。  
+为了实现更松散的耦合，也可以通过 `arguments.callee.caller` 来访问相同的信息。  
+
+	function outer(){
+    	inner();
+    }
+    function inner(){
+    	alert(arguments.callee.caller);
+    }
+    outer();
+
+IE、Firefox、Chrome 和 Safari 的所有版本以及 Opera 9.6 都支持 caller 属性。  
+
+当函数在严格模式下运行时，访问 `arguments.callee` 会导致错误。  
+
+`ECMAScript 5` 还定义了 `arguments.caller` 属性，  
+但在严格模式下访问也会导致错误，而在非严格模式下这个属性始终是 `undefined` 。  
+定义这个属性是为了分清 `arguments.caller` 和 函数的 `caller` 属性。  
+以上变化都是为了加强这门语言的安全性，这样第三方代码就不能在相同的环境里窥视其他代码了。  
+
+严格模式还有一个限制：不能为函数的 `caller` 属性赋值，否则会导致错误。
+
