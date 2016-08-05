@@ -102,11 +102,11 @@ ECMAScript 通过 RegExp 类型来支持正则表达式。
     	i;
     for(i=0;i<10;i++){
     	re = /cat/g;
-        re.test("catastrophe");
+        console.log(re.test("catastrophe"));
     }
     for(i=0;i<10;i++){
     	re = new RegExp("cat", "g");
-        re.test("catastrophe");
+        console.log(re.test("catastrophe"));
     }
 
 在第一个循环中，即使是循环体中指定的，但实际上只为 /cat/创建了**一个** RegExp 实例。  

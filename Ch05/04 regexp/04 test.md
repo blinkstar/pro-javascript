@@ -11,7 +11,7 @@
     var pattern = /\d{3}-\d{2}-\d{4}/;
 
     if(pattern.test(text)){
-    	alert("The pattern was matched.");
+    	console.log("The pattern was matched.");
     }
 
 在这个例子中，我们使用正则表达式来测试一个数字序列。  
@@ -23,8 +23,8 @@ RegExp 实例继承的 toLocaleString() 和 toString() 方法都会返回正则�
 与创建正则表达式的方式无关。例如：
 
 	var pattern = new RegExp("\\[bc\\]at", "gi");
-    alert(pattern.toString());    //       /\[bc\]at/gi
-    alert(pattern.toLocaleString());    //        /\[bc\]at/gi
+    console.log(pattern.toString());    //       /\[bc\]at/gi
+    console.log(pattern.toLocaleString());    //        /\[bc\]at/gi
 
 即使上例中的模式是通过调用 RegExp 构造函数创建的，  
 但 toLocaleString() 和 toString() 方法仍然会像它是以字面量形式创建的一样显示其字符串表示。

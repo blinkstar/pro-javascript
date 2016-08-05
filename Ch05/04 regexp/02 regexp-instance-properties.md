@@ -12,18 +12,18 @@ RegExp 的每个实例都具有下列属性，通过这些属性可以取得有�
 因为这些信息全都包含在模式声明中。例如：
 
 	var pattern1 = /\[bc\]at/i;
-    alert(pattern1.global);   // false
-    alert(pattern1.ignoreCase); // true
-    alert(pattern1.multiline);  // false
-    alert(pattern1.lastIndex);  // 0
-    alert(pattern1.source);  //    "\[bc\]at"
+    console.log(pattern1.global);   // false
+    console.log(pattern1.ignoreCase); // true
+    console.log(pattern1.multiline);  // false
+    console.log(pattern1.lastIndex);  // 0
+    console.log(pattern1.source);  //    "\[bc\]at"
 
     var pattern2 = new RegExp("\\[bc\\]at", "i");
-    alert(pattern2.global);   // false
-    alert(pattern2.ignoreCase); // true
-    alert(pattern2.multiline);  // false
-    alert(pattern2.lastIndex);  // 0
-    alert(pattern2.source);  //    "\[bc\]at"
+    console.log(pattern2.global);   // false
+    console.log(pattern2.ignoreCase); // true
+    console.log(pattern2.multiline);  // false
+    console.log(pattern2.lastIndex);  // 0
+    console.log(pattern2.source);  //    "\[bc\]at"
 
 我们注意到，尽管第一个模式使用的是字面量，第二个模式使用了 RegExp 构造函数，  
 但它们的 source 属性是相同的。  

@@ -62,7 +62,7 @@ RegExp() 的第二个参数是可选的，如果提供第二个参数，它就�
     var text = "JavaScript is more fun than Java!";
     var result;
     while((result = pattern.exec(text)) != null){
-    	alert("Matched '" + result[0] + "'" + " at position " + result.index + "; next search begins at " + pattern.lastIndex);
+    	console.log("Matched '" + result[0] + "'" + " at position " + result.index + "; next search begins at " + pattern.lastIndex);
     }
 
 另外一个  `RegExp` 方法是 `test()`， 它比 `exec()` 更简单一些 。  

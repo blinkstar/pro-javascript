@@ -20,11 +20,11 @@ RegExp 对象的主要方法是 `exec()`，该方法是专门为捕获组而设�
     var pattern = /mom( and dad( and baby)?)?/gi;
 
     var matches = pattern.exec(text);
-    alert(matches.index);  // 0
-    alert(matches.input);  // "mom and dad and baby"
-    alert(matches[0]);     // "mom and dad and baby"
-    alert(matches[1]);     // " and dad and baby"
-    alert(matches[2]);     // " and baby"
+    console.log(matches.index);  // 0
+    console.log(matches.input);  // "mom and dad and baby"
+    console.log(matches[0]);     // "mom and dad and baby"
+    console.log(matches[1]);     // " and dad and baby"
+    console.log(matches[2]);     // " and baby"
      
 这个例子中的模式包含两个捕获组。  
 最内部的捕获组匹配 " and baby"，  
@@ -45,26 +45,26 @@ RegExp 对象的主要方法是 `exec()`，该方法是专门为捕获组而设�
 	var text = "cat, bat, sat, fat";
     var pattern1 = /.at/;
     var matches1 = pattern1.exec(text);
-    alert(matches1.index);   // 0
-    alert(matches1[0]);  // cat
-    alert(pattern1.lastIndex);  // 0 
+    console.log(matches1.index);   // 0
+    console.log(matches1[0]);  // cat
+    console.log(pattern1.lastIndex);  // 0 
 
     matches1 = pattern1.exec(text);
-    alert(matches1.index);  // 0
-    alert(matches1[0]);   // cat
-    alert(pattern1.lastIndex);   // 0
+    console.log(matches1.index);  // 0
+    console.log(matches1[0]);   // cat
+    console.log(pattern1.lastIndex);   // 0
 
     var pattern2 = /.at/g;
      
     var matches2 = pattern2.exec(text);
-    alert(matches2.index);  // 0
-    alert(matches2[0]);   // cat
-    alert(pattern2.lastIndex);  //3
+    console.log(matches2.index);  // 0
+    console.log(matches2[0]);   // cat
+    console.log(pattern2.lastIndex);  //3
 
     matches2 = pattern2.exec(text);
-    alert(matches2.index);  //  5
-    alert(matches2[0]);   // bat
-    alert(pattern2.lastIndex);  // 8
+    console.log(matches2.index);  //  5
+    console.log(matches2[0]);   // bat
+    console.log(pattern2.lastIndex);  // 8
 
 这个例子中的第一个模式 pattern1 不是全局模式，因此每次调用 exec() 返回的都是第一个匹配项("cat") 。  
 而第二个模式 pattern2 是全局模式，因此每次调用 exec() 都会返回字符串中的下一个匹配项，  

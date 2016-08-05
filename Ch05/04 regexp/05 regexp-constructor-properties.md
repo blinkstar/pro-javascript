@@ -28,12 +28,12 @@ RegExp 构造函数包含一些属性(这些属性在其他语言中被看成是
     // 注意：Opera 不支持 input、lastMatch、lastParen 和 multiline 属性。
     // Internet Explorer 不支持 multiline 属性
     if(pattern.test(text)){         // true
-    	alert(RegExp.input);        // this has been a short summer
-        alert(RegExp.leftContent);  // this has been a
-        alert(RegExp.rightContent); // summer
-        alert(RegExp.lastMatch);    // short
-        alert(RegExp.lastParen);    // s
-        alert(RegExp.multiline);    // false
+    	console.log(RegExp.input);        // this has been a short summer
+        console.log(RegExp.leftContent);  // this has been a
+        console.log(RegExp.rightContent); // summer
+        console.log(RegExp.lastMatch);    // short
+        console.log(RegExp.lastParen);    // s
+        console.log(RegExp.multiline);    // false
      }
 
 以上代码创建了一个模式，匹配任何一个字符后跟 hort ，而且把第一个字符放在了一个捕获组中。  
@@ -52,12 +52,12 @@ RegExp 构造函数的各个属性返回了下列值：
     // 注意：Opera 不支持 input、lastMatch、lastParen 和 multiline 属性。
     // Internet Explorer 不支持 multiline 属性
     if(pattern.test(text)){
-    	alert(RegExp.$_);     // this has been a short summer
-        alert(RegExp["$`"]);  // this has been a
-        alert(RegExp["$'"]);  // summer
-        alert(RegExp["$&"]);  // short
-        alert(RegExp["$+"]);  // s
-        alert(RegExp["$*"]);  // false
+    	console.log(RegExp.$_);     // this has been a short summer
+        console.log(RegExp["$`"]);  // this has been a
+        console.log(RegExp["$'"]);  // summer
+        console.log(RegExp["$&"]);  // short
+        console.log(RegExp["$+"]);  // s
+        console.log(RegExp["$*"]);  // false
     }
 
 除了上面介绍的几个属性之外，还有多达9个用于存储捕获组的构造函数属性。  
@@ -69,8 +69,8 @@ RegExp 构造函数的各个属性返回了下列值：
 	var text = "this has been a short summer";
     var pattern = /(..)or(.)/g;
     if(pattern.test(text)){  
-    	alert(RegExp.$1);    // sh
-        alert(RegExp.$2);    // t
+    	console.log(RegExp.$1);    // sh
+        console.log(RegExp.$2);    // t
     }
 
 这里创建了一个包含两个捕获组的模式，并用该模式测试了一个字符串。  
