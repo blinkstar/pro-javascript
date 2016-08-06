@@ -20,21 +20,21 @@ String 支持4种使用正则表达式的方法。
 	</tbody>
 </table>
 
-	var s = "This is a \\s match test.";
+	var s = "This is a \\s string.";
 	
-	console.log(s);
+	console.log(s);     // This is a \s string.
 	
-	console.log(s.search(/\s/));
-	console.log(s.search("\\s"));
+	console.log(s.search(/\s/));   // 4
+	console.log(s.search("\\s"));  // 4
 	
-	console.log(s.replace(/\s/, "*"));
-	console.log(s.replace("\\s","*"));
+	console.log(s.replace(/\s/, "*"));  // This*is a \s string.
+	console.log(s.replace("\\s","*"));  // This is a * string.
 	
-	console.log(s.match(/\s/));
-	console.log(s.match("\\s"));
+	console.log(s.match(/\s/));    // [" ", index: 4, input: "This is a \s string."]
+	console.log(s.match("\\s"));   // [" ", index: 4, input: "This is a \s string."]
 	
-	console.log(s.split(/\s/));
-	console.log(s.match("\\s"));
+	console.log(s.split(/\s/));   // ["This", "is", "a", "\s", "string."]
+	console.log(s.split("\\s"));  // ["This is a ", " string."]
 	
 
 #### search
