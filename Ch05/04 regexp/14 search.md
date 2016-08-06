@@ -8,6 +8,18 @@
 
 String 支持4种使用正则表达式的方法。
 
+<table>
+	<thead>
+		<tr><th>方法</th><th>是否自动将字符串转为正则</th><th>是否支持g</th></tr>
+	</thead>
+	<tbody>
+		<tr><td>search</td><td>转</td><td>不支持</td></tr>
+		<tr><td>replace</td><td>不转</td><td>支持</td></tr>
+		<tr><td>match</td><td>转</td><td>支持</td></tr>
+		<tr><td>split</td><td>不转</td><td>不支持</td></tr>
+	</tbody>
+</table>
+
 #### search
 
 最简单的是 `search()`。  
