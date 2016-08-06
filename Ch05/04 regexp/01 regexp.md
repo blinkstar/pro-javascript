@@ -102,11 +102,26 @@ ECMAScript 通过 RegExp 类型来支持正则表达式。
     	i;
     for(i=0;i<10;i++){
     	re = /cat/g;
-        console.log(re.test("catastrophe"));
+    	// Chrome 中 re.lastIndex  为 0
+        console.log(re.test("catastrophe"));  // Chrome true
+        // Chrome 中 re.lastIndex  为 3
     }
     for(i=0;i<10;i++){
     	re = new RegExp("cat", "g");
-        console.log(re.test("catastrophe"));
+    	// Chrome 中 re.lastIndex  为 0
+        console.log(re.test("catastrophe"));  // Chrome true
+        // Chrome 中 re.lastIndex  为 3
+    }
+    
+    re = /cat/g;
+    for(i=0;i<10;i++){
+    	// Chrome 中 re.lastIndex  为 0 3 交替 
+        console.log(re.test("catastrophe"));  // Chrome true false 交替
+    }
+    re = new RegExp("cat", "g");
+    for(i=0;i<10;i++){
+    	// Chrome 中 re.lastIndex  为 0 3 交替 
+    	console.log(re.test("catastrophe"));  // Chrome true false 交替
     }
 
 在第一个循环中，即使是循环体中指定的，但实际上只为 /cat/创建了**一个** RegExp 实例。  
