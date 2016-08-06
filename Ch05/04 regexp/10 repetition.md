@@ -24,10 +24,6 @@
 		<tr><td>?</td><td>匹配前一项0次或者1次，也就是说前一项是可选的，等价于{0,1}</td></tr>
 		<tr><td>+</td><td>匹配前一项1次或多次，等价于 {1,}</td></tr>
 		<tr><td>*</td><td>匹配前一项0次或多次，等价于 {0,}</td></tr>
-		<tr><td>\S</td><td>任何非 Unicode 空白符的字符，注意 \w 和 \S 不同</td></tr>
-		<tr><td>\d</td><td>任何 ASCII 数字，等价于 [0-9]</td></tr>
-		<tr><td>\D</td><td>除了 ASCII 数字之外的任何字符，等价于 [^0-9]</td></tr>
-		<tr><td>[\b]</td><td>退格直接量(特例)</td></tr>
 	</tbody>
 </table>
 
