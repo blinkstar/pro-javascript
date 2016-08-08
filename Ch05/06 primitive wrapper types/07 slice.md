@@ -1,0 +1,67 @@
+ECMAScript 还提供了三个基于子字符串创建新字符串的方法： slice()、substr() 和 substring() 。  
+
+这三个方法都会返回被操作字符串的一个子字符串，而且也**都接受一或两个参数**。  
+
+第一个参数指定子字符串的开始位置，第二个参数(在指定的情况下)表示子字符串到哪里结束。
+
+具体来说，**slice() 和 substring() 的第二个参数指定的是子字符串最后一个字符串后面的位置。**  
+
+**而 substr() 的第二个参数指定的则是返回的字符个数**。  
+
+如果没有给这些方法传递第二个参数，则将字符串的长度作为结束位置。    
+
+与 concat() 方法一样，slice()、substr()和substring()**也不会修改字符串本身的值**   
+-- 它们只是返回一个基本类型的字符串，对原始字符串没有任何影响。请看下面的例子。
+
+	var stringValue = "hello world";
+    alert(stringValue.slice(3));         // "lo world"
+    alert(stringValue.substring(3));  // "lo world"
+    alert(stringValue.substr(3));   //  "lo world"
+    alert(stringValue.slice(3,7));   // "lo w"
+    alert(stringValue.substring(3,7));   // "lo w"
+    alert(stringValue.substr(3,7));   // "lo worl"
+
+这个例子比较了以相同方式调用 slice()、substr() 和 substring() 得到的结果，而且多数情况下的结果是相同的。  
+
+在只指定一个参数 3 的情况下，这三个方法都返回 "lo world" ，因为 "hello" 中的第二个 "l" 处于位置3 。  
+
+而在指定两个参数 3和7的情况下，  
+slice() 和 substring() 返回 "lo w"   
+("world" 中 "o" 处于位置7，因此结果中不包含 "o") ，  
+但 substr() 返回 "lo worl" ，因为它的第二个参数指定的是要返回的字符个数。  
+
+在传递给这些方法的参数是**负值**的情况下，它们的行为就不尽相同了。
+
+ - 其中，slice() 方法会将传入的负值与字符串的长度相加，
+ - substr() 方法将负的第一个参数加上字符串的长度，而将负的第二个参数转换为 0 。
+ - 最后，substring() 方法会把所有负值参数都转换为 0 。下面来看例子。
+
+	var stringValue = "hello world";
+    alert(stringValue.slice(-3));   // "rld"
+    alert(stringValue.substring(-3));  // "hello world"
+    alert(stringValue.substr(-3));  // "rld"
+    alert(stringValue.slice(3, -4));   // "lo w" 
+    alert(stringValue.substring(3,-4))  // "hel"
+    alert(stringValue.substr(3,-4));  //""(空字符串)
+
+这个例子清晰地展示了上述三个方法之间的不同行为。  
+
+在给 slice() 和 substr() 传递一个负值参数时，它们的行为相同。  
+这是因为 -3 会被转换为 8 (字符串长度加参数 11+(-3) = 8)，  
+实际上相当于调用了 slice(8) 和 substr(8) 。  
+
+但 substring() 方法则返回了全部字符串，因为它将 -3 转换成了 0 。  
+
+IE的JavaScript实现在处理向 substr()方法传递负值的情况时存在问题，它会返回原始的字符串。  
+IE9修复了这个问题。
+
+当第二个参数是负值时，这三个方法的行为各不相同。  
+
+slice()方法会把第二个参数转换为 7 。这就相当于调用了 slice(3,7)，因此返回 "lo w" 。  
+
+substring() 方法会把第二个参数转换为 0，使调用变成了 substring(3,0)，  
+**而由于这个方法会将较小的数作为开始位置，将较大的数作为结束位置**，因此最终相当于调用了 substring(0,3)。  
+
+substr()也会将第二个参数转换为0，这也就意味着返回包含零个字符的字符串，也就是一个空字符串。  
+
+

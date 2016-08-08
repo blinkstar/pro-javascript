@@ -1,0 +1,44 @@
+### localeCompare() 方法
+
+与操作字符串有关的最后一个方法是 localeCompare() ，这个方法**比较两个字符串**，并返回下列值中的一个：
+
+ - 如果字符串在字母表中应该排在字符串参数之前，则返回一个负数 (大多数情况下是-1，具体的值要视实现而定)；
+ - 如果字符串等于字符串参数，则返回 0；
+ - 如果字符串在字母表中应该排在字符串参数之后，则返回一个正数(大多数情况下是1，具体的值同样要视实现而定)。
+
+下面是几个例子。
+
+	var stringValue = "yellow";
+    alert(stringValue.localeCompare("brick"));    // 1
+    alert(stringValue.localeCompare("yellow"));   // 0
+    alert(stringValue.localeCompare("zoo")); // -1
+
+这个例子比较了字符串 "yellow" 和另外几个值: "brick"、"yellow" 和 "zoo" 。  
+因为 "brick" 在字母表中排在 "yellow" 之前，所以 localeCompare() 返回了 1；  
+而 "yellow" 等于 "yellow" ，所以localeCompare() 返回了 0;   
+最后，"zoo" 在字母表中排在 "yellow" 后面，所以 localeCompare() 返回了 -1 。  
+
+再强调一次，因为 localeCompare() 返回的数值取决于实现，所以最好是像下面例子所示的这样使用这个方法。
+ 
+	function determineOrder(value){
+    	var result = stringValue.localeCompare(value);
+        if(reslult < 0){
+        	alert("The string 'yellow' comes before the string '" + value + "'.");
+        }else if(result > 0){
+        	alert("The string 'yellow' comes after the string '" + value + "'.");
+        }else {
+        	alert("The string 'yellow' is equal to the string '" + value + "'.")     
+        }
+    } 
+
+    determineOrder("brick");
+    determineOrder("yellow");
+    determineOrder("zoo");
+
+使用这种结构，就可以确保自己的代码在任何实现中都可以正确地运行了。
+
+localeCompare() 方法比较与众不同的地方，就是实现所支持的地区(国家和语言)决定了这个方法的行为。  
+比如，美国以英语作为 ECMAScript 实现的标准语言，因此 localeCompare() 就是区分大小写的，  
+于是大写字母在字母表中排在小写字母前头就成为了一项决定性的比较规则。不过，在其他地区恐怕就不是这种情况了。  
+
+

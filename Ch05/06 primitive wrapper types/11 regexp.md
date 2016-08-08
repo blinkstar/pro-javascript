@@ -1,0 +1,151 @@
+### 字符串的模式匹配方法
+
+String 类型定义了几个用于在字符串中匹配模式的方法。
+
+**都不影响原始字符串**
+
+#### 第一个方法就是 match()  
+
+在字符串上调用这个方法，本质上与调用 RegExp 的 exec() 方法相同。  
+match() 方法只接受一个参数，要么是一个正则表达式，要么是一个 RegExp 对象。来看下面的例子。  
+
+	var text = "cat, bat, sat, fat";
+    var pattern = /.at/;
+     
+    // 与 pattern.exec(text) 相同
+    var matches = text.match(pattern);
+    console.log(matches.index);   // 0
+    console.log(matches[0]);   // "cat"
+    console.log(pattern.lastIndex);  // 0
+
+本例中的 match() 方法返回了一个数组；  
+如果调用 RegExp 对象的 exec() 方法并传递本例中的字符串作为参数，那么也会得到与此相同的数组：  
+数组的第一项是与整个模式匹配的字符串，之后的每一项 (如果有) 保存着与正则表达式中的捕获组匹配的字符串。
+
+#### 另一个用于查找模式的方法是 search() 
+
+这个方法的唯一参数与match() 方法的参数相同：由字符串或 RegExp 对象指定的一个正则表达式。  
+search() 方法返回字符串中第一个匹配项的索引；如果没有找到，则返回 -1 。  
+
+而且，search() 方法始终是从字符串的开头向后查找模式。看下面的例子。
+
+	var text = "cat, bat, sat, fat";
+    var pos = text.search(/at/);
+    console.log(pos);  // 1
+
+这个例子中的 search() 方法返回 1，即 "at" 在字符串中第一次出现的位置。
+     
+#### 为了简化替换字符串的操作，ECMAScript 提供了 replace() 方法  
+
+这个方法接受两个参数：  
+ - 第一个参数快可以是一个 RegExp 对象或者一个字符串 (这个字符串不会被转换成正则表达式)，  
+ - 第二个参数可以是一个字符串或者一个函数。  
+ 
+如果第一个参数是字符串，那么只会替换第一个子字符串。  
+如果要想替换所有子字符串，唯一的办法就是提供一个正则表达式，而且要指定全局(g)标志，如下所示。     
+
+	var text = "cat, bat, sat, fat";
+    var result = text.replace("at", "ond");
+    console.log(result);    // "cond, bat, sat, fat"
+
+    result = text.replace(/at/g, "ond");
+    console.log(result);   // "cond, bond, sond, fond"
+
+在这个例子中，首先传入 replace() 方法的是字符串 "at" 和替换用的字符串 "ond"。  
+替换的结果是把 "cat" 变成了 "cond"，但字符串中的其他字符并没有受到影响。  
+然后，通过将第一个参数修改为带有全局标志的正则表达式，就将全部 "at" 都替换成了 "ond"。
+
+如果第二个参数是字符串，那么还可以使用一些特殊的字符序列，将正则表达式操作得到的值插入到结果字符串中。  
+下表列出了 ECMAScript 提供的这些特殊的字符序列。  
+
+<table>
+	<thead>
+		<tr><th>字面量序列</th><th>替换文本</th></tr>
+	</thead>
+	<tbody>
+		<tr><td>$$</td><td>$</td></tr>
+		<tr><td>$&</td><td>匹配整个模式的子字符串。与RegExp.lastMatch的值相同</td></tr>
+		<tr><td>$'</td><td>匹配的子字符串之前的子字符串。与RegExp.leftContext的值相同</td></tr>
+		<tr><td>$`</td><td>匹配的子字符串之后的子字符串。与RegExp.rightContext的值相同</td></tr>
+		<tr><td>$n</td><td>匹配第n个捕获组的子字符串，其中n等于0~9。例如，$1是匹配第一个捕获组的子字符串，$2是匹配第二个捕获组的子字符串，以此类推。如果正则表达式中没有定义捕获组，则使用空字符串</td></tr>
+		<tr><td>$nn</td><td>匹配第nn个捕获组的子字符串，其中nn等于01~99。例如，$01是匹配第一个捕获组的子字符串，$02是匹配第二个捕获组的子字符串，以此类推。如果正则表达式中没有定义捕获组，则使用空字符串</td></tr>
+	</tbody>
+</table>
+
+通过这些特殊的字符序列，可以使用最近一次匹配结果中的内容，如下面的例子所示。  
+
+	var text = "cat, bat, sat, fat";
+    result = text.replace(/(.at)/g, "word ($1)");
+    console.log(result);  // word (cat), word (bat), word (sat), word (fat)
+
+在此，每个以 "at" 结尾的单词都被替换了，替换结果是 "word" 后跟一对圆括号，  
+而圆括号中是被字符序列 $1 所替换的单词。
+
+replace() 方法的第二个参数也可以是一个函数。  
+
+在**只有一个匹配项** (即与模式匹配的字符串) 的情况下，会向这个函数传递 3 个参数：   
+模式的匹配项、模式匹配项在字符串中的位置和原始字符串。  
+
+在正则表达式中定义了多个捕获组的情况下，  
+传递给函数的参数依次是模式的匹配项、第一个捕获组的匹配项、第二个捕获组的匹配项......，  
+但最后两个参数仍然分别是模式的匹配项在字符串中的位置和原始字符串。  
+
+这个函数应该返回一个字符串，表示应该被替换的匹配项使用函数作为   
+replace() 方法的第二个参数可以实现更加精细的替换操作，请看下面这个例子。
+
+	function htmlEscape(text){
+    	return text.replace(/[<>"&]/g, function(match, pos, originalText){
+        	switch(match){
+            	case "<":
+                	return "&lt";
+                case ">":
+                	return "&gt;";
+                case "&":
+                	return "&amp;";
+                case "\"":
+                	return "&quot;";
+            }
+        });
+    }
+
+    console.log(htmlEscape("<p class=\"greeting\">Hello world!</p>"));
+    // &lt;p class=&quot;greeting&quot;&gt;Hello world!&lt;/p&gt;
+
+这里，我们为插入 HTML 代码定义了函数 htmlEscape()，这个函数能够转义4个字符：  
+小于号、大于号、和好以及双引号。实现这种转义的最简单方式，就是使用正则表达式查找这几个字符，  
+然后定义一个能够针对每个匹配的字符返回特定HTML实体的函数。
+
+#### 最后一个与模式有关的方法是 split()  
+
+这个方法可以基于指定的分隔符将一个字符串分割成多个子字符串，并将结果放在一个数组中。  
+分隔符可以是字符串，也可以是一个 RegExp 对象 (这个方法不会将字符串看成正则表达式)。   
+
+split() 方法可以接受可选的第二个参数，**用于指定数组的大小**，  
+以便确保返回的数组不会超过既定大小。请看下面的例子。
+
+	var colorText = "red,blue,green,yellow";
+    var colors1 = colorText.split(",");   // ["red", "blue", "green", "yellow"]
+    var colors2 = colorText.split(",", 2);   // ["red", "blue"]
+    var colors3 = colorText.split(/[^\,]+/);  // ["", ",", "," ",", ""]
+
+在这个例子中，colorText 是逗号分隔的颜色名字符串。  
+基于该字符串调用 split(",") 会得到一个包含其中颜色名的数组，用于分割字符串的分隔符是逗号。  
+
+为了将数组截短，让它只包含两项，可以为 split() 方法传递第二个参数 2 。  
+最后，通过使用正则表达式，还可以取得包含逗号字符的数组。  
+
+需要注意的是，在最后一次调用split()返回的数组中，第一项和最后一项是两个空字符串。  
+之所以会这样，是因为通过正则表达式指定的分隔符出现在了字符串的开头(即子字符串"red")   
+和末尾(即子字符串"yellow") 。
+
+对 split() 中正则表达式的支持因浏览器而异。  
+尽管对于简单的模式没有什么差别，但对于未发现匹配项以及带有捕获组的模式，  
+匹配的行为就大不相同了。以下是几种常见的差别。
+ - IE8及之前版本会忽略捕获组。ECMA-262规定应该把捕获组拼接到结果数组中。IE9能正确地在结果中包含捕获组。
+ - Firefox3.6及之前版本在捕获组未找到匹配项时，会在结果数组中包含空字符串；
+ 	ECMA-262规定没有匹配项的捕获组在结果数组中应该用 undefined 表示。
+
+ 
+在正则表达式中使用捕获组时还有其他微妙的差别。在使用这种正则表达式时，一定要在各种浏览器下多做一些测试。
+ 
+ 

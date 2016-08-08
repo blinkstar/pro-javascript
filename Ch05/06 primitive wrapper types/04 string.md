@@ -1,0 +1,19 @@
+## String 类型
+
+String 类型是字符串的对象包装类型，可以像下面这样使用 String 构造函数来创建。  
+
+	var stringObject = new String("hello world");
+
+String 对象的方法也可以在所有基本的字符串值中访问到。  
+其中，继承的 `valueOf()`、`toLocaleString()` 和 `toString()` 方法，都返回对象所表示的基本字符串值。  
+
+String 类型的每个实例都有一个 `length` 属性，表示字符串中包含多少个字符。来看下面的例子。  
+
+	var stringValue = "hello world";
+    alert(stringValue.length);   // "11"  
+    
+这个例子输出了字符串 `"hello world"` 中的字符数量，即 "11"。  
+应该注意的是，**即使字符串中包含双字节符(不是占一个字节的ASCII字符)，每个字符也仍然算一个字符**。
+
+String 类型提供了很多方法，用于辅助完成对 ECMAScript 中字符串的解析和操作。
+

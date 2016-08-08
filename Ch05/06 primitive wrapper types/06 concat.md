@@ -1,0 +1,27 @@
+### 字符串操作方法
+
+下面介绍与操作字符串有关的几个方法。  
+
+第一个就是 concat()，用于将一或多个字符串拼接起来，返回拼接得到的新字符串。先来看一个例子。  
+
+	var stringValue = "hello ";
+    var result = stringValue.concat("world");
+    alert(result);  // "hello world"
+    alert(stringValue);    // "hello"
+     
+在这个例子中，通过 stringValue调用 concat() 方法    
+返回的结果是 "hello world" -- **但 stringValue 的值则保持不变**。  
+
+实际上，concat() 方法可以接受任意多个参数，也就是说可以通过它拼接任意多个字符串。再看一个例子：  
+
+	var stringValue = "hello ";
+    var result = stringValue.concat("world", "!");
+    
+    alert(result);    // "hello world!"
+    alert(stringValue);  // "hello"
+
+这个例子将 "world" 和 "!" 拼接到了 "hello" 的末尾。  
+虽然 concat() 是专门用来拼接字符串的方法，但实践中使用更多的还是加号操作符 (+) 。  
+而且，使用加号操作符在大多数情况下都比使用 concat() 方法要简便易行 (特别是在拼接多个字符串的情况下)。
+ 
+ 
