@@ -98,4 +98,85 @@ IE 8 是第一个实现 Object.defineProperty() 方法的浏览器版本。
 然而，这个版本的实现存在诸多限制；只能在 DOM 对象上使用这个方法，而且只能创建访问器属性。  
 由于实现的不彻底，建议不要在 IE8 中使用 Object.defineProperty() 方法。  
 
+#### 访问器属性
+
+访问器属性不包含数据值；它们包含一对儿 getter 和 setter 函数 (不过，这两个函数都不是必需的)。  
+在读取访问器属性时，会调用 getter 函数，这个函数负责返回有效值；  
+在写入访问器属性时，会调用 setter 函数并传入新值，这个函数负责决定如何处理数据。  
+
+访问器属性有如下 4 个特性。
+
+ - [[Configurable]] : 表示能否通过 delete 删除属性从而重新定义属性，能否修改属性的特性，  
+ 					  或者能否把属性修改为数据属性。
+ 					  对于直接在对象上定义的属性，这个特性的默认值为 true 。
+ - [[Enumerable]] : 表示能否通过 for-in 循环返回属性。
+ 					对于直接在对象上定义的属性，这个特性的默认值为 true 。
+ - [[Get]] : 在读取属性时调用的函数。默认值为 undefined 。
+ - [[Set]] : 在写入属性时调用的函数。默认值为 undefined 。
+
+**访问器属性不能直接定义，必须使用 Object.defineProperty() 来定义**。请看下面的例子。  
+
+	var book = {
+    	_year: 2004,
+        edition: 1
+    };
+
+    Object.defineProperty(book, "year", {
+    	get: function(){
+        	return this._year;
+        },
+        set: function(newValue){
+        	if(newValue > 2004){
+            	this._year = newValue;
+                this.edition += newValue - 2004;
+            }
+        }
+    });
+    book.year = 2005;
+    console.log(book.edition);  // 2
+
+以上代码创建了一个 book 对象，并给它定义两个默认的属性： _year 和 edition 。  
+ _year 前面的下划线是一种常用的记号，用于表示只能通过对象方法访问属性。  
+ 
+ 而**访问器属性 year** 则包含一个 getter 函数和一个 setter 函数。   
+ getter 函数返回 _year 的值，setter 函数通过计算来确定正确的版本。  
+ 因此，把 year 属性修改为 2005 会导致 _year 变成 2005 ，而 edition 变为 2 。  
+ 
+ **这是使用访问器属性的常见方式，即设置一个属性的值会导致其他属性发生变化。**    
+
+不一定非要同时指定 getter 和 setter 。  
+只指定 getter 意味着属性是不能写 ，尝试写入输入会被忽略。  
+在严格模式下，尝试写入只指定了 getter 函数的属性会抛出错误。  
+类似地，只指定 setter 函数的属性也不能读，  
+否则在非严格模式下会返回 undefined，而在严格模式下会抛出错误。  
+
+支持 ECMAScript 5 的这个方法的浏览器有    
+IE9+ (IE8只是部分实现)、Firefox 4+ 、Safari 5+ 、Opera 12+ 和 Chrome 。  
+
+在这个方法之前，要创建访问器属性，一般都使用两个非标准的方法：  
+ __defineGetter__() 和 __defineSetter__() 。  
+ 
+ 这两个方法最初是由 Firefox 引入的，后来 Safari 3、Chrome 1 和 Opera 9.5 也给出了相同的实现。  
+ 使用这两个遗留的方法，可以像下面这样重写前面的例子。
+
+	var book = {
+    	__year: 2004,
+        edition: 1
+    };
+     
+    // 定义访问器的旧有方法
+    book.__defineGetter__("year", function(){
+    	return this.__year;
+    });
+    book.__defineSetter__("year", function(newValue){
+    	if(newValue > 2004){
+        	this.__year = newValue;
+            this.edition += newValue - 2004;
+        }
+    });
+
+    book.year = 2005;
+    console.log(book.edition);  // 2
+
+在不支持 Object.defineProperty() 方法的浏览器中不能修改 [[Configurable]]  和 [[Enumerable]]。  
 
