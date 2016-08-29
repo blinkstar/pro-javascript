@@ -32,17 +32,17 @@
                 }
             }
         }
-});
+	});
 
-var descriptor = Object.getOwnPropertyDescriptor(book, "_year");
-console.log(descriptor.value);  // 2004
-console.log(descriptor.configurable);  // false
-console.log(typeof descriptor.get);   // "undefined"
-     
-var descriptor = Object.getOwnPropertyDescriptor(book, "year");
-console.log(descriptor.value);  // undefined
-console.log(descriptor.configurable);  // false
-console.log(typeof descriptor.get);   // "function"
+	var descriptor = Object.getOwnPropertyDescriptor(book, "_year");
+	console.log(descriptor.value);  // 2004
+	console.log(descriptor.configurable);  // false
+	console.log(typeof descriptor.get);   // "undefined"
+	     
+	var descriptor = Object.getOwnPropertyDescriptor(book, "year");
+	console.log(descriptor.value);  // undefined
+	console.log(descriptor.configurable);  // false
+	console.log(typeof descriptor.get);   // "function"
      
 对于数据属性 _year，value 等于最初的值，configurable 是 false，而 get 等于 undefined 。  
 对于访问器属性 year ，value 等于 undefined，enumerable 是 false，  
