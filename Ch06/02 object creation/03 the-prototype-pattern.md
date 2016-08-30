@@ -58,7 +58,7 @@ ECMA-262 第5版中管这个指针叫 [[Prototype]] 。
 以前面使用 Person 构造函数和 Person.prototype 创建实例的代码为例，  
 下图展示了各个对象之间的关系。
 
-     ![](http://i.imgur.com/Pv5oNTA.png)
+![](http://i.imgur.com/Pv5oNTA.png)
 
      
 图展示了 Person 构造函数、Person的原型属性以及 Person 现有的两个实例之间的关系。  
@@ -201,7 +201,7 @@ ECMAScript 5 增加了一个新方法，叫 `Object.getPrototypeOf()` ，
 
 下图 展示了上面例子在不同情况下的实现与原型的关系 (为了简单起见，图中省略了与 Person 构造函数的关系)。
 
-   ![](http://i.imgur.com/UsDDLIQ.png)  
+![](http://i.imgur.com/UsDDLIQ.png)  
 
 ECMAScript 5 的 `Object.getOwnPropertyDescriptor()` 方法只能用于实例属性，  
 要取得原型属性的描述符，必须直接在原型对象上调用 `Object.getOwnPropertyDescriptor()` 方法。
@@ -480,7 +480,7 @@ Object.keys() 和 Object.getOwnPropertyNames() 方法都可以用来代替 for-i
 然后在调用 friend.sayName() 时发生了错误，因为 friend 指向的原型中不包含以该名字命名的属性。  
 下图展示了这个过程的内幕。
 
-     ![](http://i.imgur.com/d54Oyfz.png)
+![](http://i.imgur.com/d54Oyfz.png)
 
 从图中可以看出，重写原型对象切断了现有原型与任何之前已经存在的对象实例之间的联系；它们引用的仍然是最初的原型。  
 
