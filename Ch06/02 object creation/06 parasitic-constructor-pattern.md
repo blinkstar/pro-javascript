@@ -1,0 +1,62 @@
+### 寄生构造函数模式
+
+通常，在前述的几种模式都不适用的情况下，可以使用寄生 (parasitic) 构造函数模式。  
+
+这种模式的基本思想是创建一个函数，该函数的作用仅仅是封装创建对象的代码，然后再返回新创建的对象；  
+但从表面上看，这个函数又很像是典型的构造函数。下面是一个例子。  
+
+	function Person(name, age, job){
+    	var o = new Object();
+        o.name = name;
+        o.age = age;
+        o.job = job;
+        o.sayName = function(){
+        	console.log(this.name);
+        };
+        return o;
+    }
+     
+    var friend = new Person("Nicholas", 29, "Software Engineer");
+    friend.sayName();   //"Nicholas"
+
+在这个例子中，Person 函数创建了一个新对象，并以相应的属性和方法初始化该对象，然后又返回了这个对象。  
+除了使用 new 操作符并把使用的包装函数叫做构造函数之外，这个模式跟工厂模式起始是一模一样的。  
+
+**构造函数在不返回值的情况下，默认会返回新对象实例。**    
+而通过在构造函数的末尾添加一个 return 语句，可以**重写调用构造函数时返回的值**。  
+
+这个模式可以在特殊的情况下用来对对象创建构造函数。  
+假设我们想创建一个具有额外方法的特殊数组。**由于不能直接修改 Array 构造函数，因此可以使用这个模式**。  
+
+	function SpecialArray(){
+    	// 创建数组
+        var values = new Array();
+        // 添加值
+        values.push.apply(values, arguments); 
+        // 将 arguments (构造函数接收到的所有参数) values.push 而不是把整个数组传进去
+        // values.push(arguments); 会得到 [object Arguments]
+        // 添加方法
+        values.toPipedString = function(){
+        	return this.join("|");
+        };
+		// 返回数组
+        return values;
+    }
+
+    var colors = new SpecialArray("red", "blue", "green");
+    console.log(colors.toPipedString());  // "red|blue|green"
+
+在这个例子中，我们创建了一个名叫 SpecialArray 的构造函数。  
+在这个函数内部，首先创建了一个数组，然后 push() 方法 (用构造函数接收到的所有参数) 初始化了数组的值。  
+随后，又给数组实例添加了一个 toPipedString() 方法，该方法返回以竖线分割的数组值。  
+最后，将数组以函数值的形式返回。  
+接着，我们调用了 SpecialArray 构造函数。  
+向其中传入了用于初始化数组的值，此后又调用了 toPipedString() 方法。  
+
+关于寄生构造函数模式，有一点需要说明：  
+ - 首先，返回的对象与构造函数或者与构造函数的原型属性之间没有关系；  
+ - 也就是说，构造函数返回的对象与在构造函数外部创建的对象没有什么不同。  
+ 为此，不能依赖 instanceof 操作符来确定对象类型。  
+ 
+由于存在上述问题，我们建议在可以使用其他模式的情况下，不要使用这种模式。
+
