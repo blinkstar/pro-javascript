@@ -240,7 +240,7 @@ ECMAScript 5 的 `Object.getOwnPropertyDescriptor()` 方法只能用于实例属
     console.log("name" in person2);    // true
 
     delete person1.name;
-    console.log(person1.name);   // "Nicholas"  -- 来自实例
+    console.log(person1.name);   // "Nicholas"  -- 来自原型
     console.log(person1.hasOwnProperty("name"));   // fasle
     console.log("name" in person1);   // true
 
